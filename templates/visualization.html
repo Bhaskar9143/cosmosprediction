@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Debris Tracking Results</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Space Debris Tracking Results</h1>
+    
+    <h2>Mean Motion</h2>
+    <table>
+        <tr>
+            <th>Mean Motion</th>
+        </tr>
+        <tr>
+            <td>{{ mean_motion }}</td>
+        </tr>
+    </table>
+    
+    <h2>Predicted Mean Motion</h2>
+    <table>
+        <tr>
+            <th>Predicted Mean Motion</th>
+        </tr>
+        <tr>
+            <td>{{ predicted_mean_motion }}</td>
+        </tr>
+    </table>
+
+    <h2>Predicted Positions</h2>
+    <table>
+        <tr>
+            <th>Object Name</th>
+            <th>X</th>
+            <th>Y</th>
+            <th>Z</th>
+        </tr>
+        {% for index, row in predicted_positions.iterrows() %}
+        <tr>
+            <td>{{ row.OBJECT_NAME }}</td>
+            <td>{{ row.x }}</td>
+            <td>{{ row.y }}</td>
+            <td>{{ row.z }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <h2>Collision Detection Results</h2>
+    <table>
+        <tr>
+            <th>Object 1</th>
+            <th>Object 2</th>
+            <th>Distance</th>
+            <th>Collision</th>
+        </tr>
+        {% for index, row in collision_results.iterrows() %}
+        <tr>
+            <td>{{ row.Object1 }}</td>
+            <td>{{ row.Object2 }}</td>
+            <td>{{ row.Distance }}</td>
+            <td>{{ row.Collision }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

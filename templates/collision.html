@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collision Detection</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        #summary {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Collision Detection</h1>
+    
+    <div id="summary">
+        Displaying 100 collision records.
+    </div>
+
+    <table id="collisionTable">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Object 1</th>
+                <th>Object 2</th>
+                <th>Distance (km)</th>
+                <th>Collision Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for collision in collisions[:100] %}
+            <tr data-object1="{{ collision.Object1 }}" data-object2="{{ collision.Object2 }}" data-distance="{{ collision.Distance }}">
+                <td>
+                    <input type="checkbox" class="object-checkbox">
+                </td>
+                <td>{{ collision.Object1 }}</td>
+                <td>{{ collision.Object2 }}</td>
+                <td>{{ collision.Distance }}</td>
+                <td>{{ collision.Collision }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <button id="check-collision">Check Selected Distances</button>
+
+    <div id="result"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#check-collision').click(function() {
+                const selectedObjects = [];
+                const distances = [];
+
+                // Collect the names and distances of selected objects
+                $('.object-checkbox:checked').each(function() {
+                    const row = $(this).closest('tr');
+                    const object1 = row.data('object1');
+                    const object2 = row.data('object2');
+                    const distance = row.data('distance');
+                    selectedObjects.push(`${object1} and ${object2}`);
+                    distances.push(distance);
+                });
+
+                if (selectedObjects.length === 0) {
+                    $('#result').text('Please select at least one pair of objects.');
+                } else {
+                    const averageDistance = distances.reduce((a, b) => parseFloat(a) + parseFloat(b), 0) / distances.length;
+                    $('#result').text(`Selected pairs: ${selectedObjects.join(', ')}. Average distance: ${averageDistance.toFixed(2)} km.`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
