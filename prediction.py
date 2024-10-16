@@ -130,41 +130,45 @@ def calculate_position(df):
 # Calculate positions based on orbital parameters
 predicted_positions_df = calculate_position(df)
 
-# Mean motion calculations
-mean_motion = df['MEAN_MOTION'].mean()
-predicted_mean_motion = np.mean(y_pred_svm)
+# Function to check for potential collisions
+def check_collision(predicted_positions_df, spacecraft_eq, spacecraft_size):
+    collision_threshold = spacecraft_size + 10_000  # 10 km buffer in meters
+    possible_collisions = []
 
-# Create DataFrame for mean motions
-mean_motion_df = pd.DataFrame({'Mean Motion': [mean_motion]})
-predicted_mean_motion_df = pd.DataFrame({'Predicted Mean Motion': [predicted_mean_motion]})
+    for index, row in predicted_positions_df.iterrows():
+        # Calculate the spacecraft's position based on the given trajectory equation (example trajectory)
+        t = index  # For simplicity, using index as time step
+        spacecraft_x = spacecraft_eq['a1'] * t + spacecraft_eq['b1']
+        spacecraft_y = spacecraft_eq['a2'] * t + spacecraft_eq['b2']
+        spacecraft_z = spacecraft_eq['a3'] * t + spacecraft_eq['b3']
 
-# Save mean motions to CSV files
-mean_motion_df.to_csv('mean_motion.csv', index=False)
-predicted_mean_motion_df.to_csv('predicted_mean_motion.csv', index=False)
+        # Calculate the distance between the debris and spacecraft
+        distance = np.sqrt((row['x'] - spacecraft_x) * 2 + (row['y'] - spacecraft_y) * 2 + (row['z'] - spacecraft_z) ** 2)
 
-# Collision detection function
-def detect_collisions(predicted_positions, threshold=1.0):
-    collisions = []
-    num_objects = predicted_positions.shape[0]
-    
-    for i in range(num_objects):
-        for j in range(i + 1, num_objects):
-            distance = np.sqrt((predicted_positions['x'].iloc[i] - predicted_positions['x'].iloc[j]) ** 2 +
-                               (predicted_positions['y'].iloc[i] - predicted_positions['y'].iloc[j]) ** 2 +
-                               (predicted_positions['z'].iloc[i] - predicted_positions['z'].iloc[j]) ** 2)
-            
-            if distance < threshold:
-                collisions.append({
-                    'Object1': predicted_positions['OBJECT_NAME'].iloc[i],
-                    'Object2': predicted_positions['OBJECT_NAME'].iloc[j],
-                    'Distance': distance,
-                    'Collision': True
-                })
-    
-    return pd.DataFrame(collisions)
+        if distance <= collision_threshold:
+            possible_collisions.append((row['OBJECT_NAME'], distance))
 
-# Detect collisions
-collision_df = detect_collisions(predicted_positions_df)
+    return possible_collisions
+
+# Sample spacecraft trajectory equation (example values)
+spacecraft_trajectory_eq = {
+    'a1': 500, 'b1': 1000,
+    'a2': 600, 'b2': 1200,
+    'a3': 700, 'b3': 1500
+}
+spacecraft_size = 15  # Example size of the spacecraft
+possible_collisions = check_collision(predicted_positions_df, spacecraft_trajectory_eq, spacecraft_size)
+
+# Print results
+if possible_collisions:
+    print("Potential collisions detected:")
+    for collision in possible_collisions:
+        print(f"Object {collision[0]} is within collision range, distance: {collision[1]:.2f} meters")
+else:
+    print("No potential collisions detected within the given range.")
+
+# Save predicted positions to a CSV file
+predicted_positions_df.to_csv('predicted_positions.csv', index=False)
 
 # Save models
 lstm_model.save('lstm_model.h5')
@@ -177,12 +181,4 @@ with open('scaler.pkl', 'wb') as f:
 # Save the SVM model using pickle
 with open('svm_model.pkl', 'wb') as f:
     pickle.dump(svm_model, f)
-
-# Save predicted positions to a CSV file
-predicted_positions_df.to_csv('predicted_positions.csv', index=False)
-
-# Save collision detection results to a CSV file
-collision_df.to_csv('collision_detection.csv', index=False)
-
-# Print summary
-print("Predicted positions and collision detection results have been saved to CSV files.")
+print("Predicted positions and models have been saved.")

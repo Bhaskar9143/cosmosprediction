@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .data {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .data th, .data td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        .data th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    <div>{{ table | safe }}</div>
+    
+    {% if collisions is defined %}
+    <h2>Potential Collisions</h2>
+    <table class="data">
+        <tr>
+            <th>Object Name</th>
+            <th>Distance</th>
+        </tr>
+        {% for collision in collisions[:100] %}
+        <tr>
+            <td>{{ collision.OBJECT_NAME }}</td>
+            <td>{{ collision.distance }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No potential collisions to display.</p>
+    {% endif %}
+    
+    <a href="/">Back to Home</a>
+</body>
+</html>
