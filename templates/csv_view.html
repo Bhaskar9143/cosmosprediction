@@ -8,21 +8,55 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background: linear-gradient(135deg, #0e1f3d, #3c4a73); /* Space-themed background */
+            color: #ffffff; /* White text for contrast */
+            text-align: center; /* Center text alignment */
         }
         h1 {
-            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Soft glow for title */
+        }
+        h2 {
+            font-size: 2em;
+            margin: 20px 0;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Soft glow for subheadings */
         }
         .data {
-            width: 100%;
+            width: 80%; /* Adjust width for better appearance */
             border-collapse: collapse;
+            margin: 0 auto; /* Center the table */
+            border-radius: 10px; /* Soft corners for table */
+            overflow: hidden; /* To apply border-radius effect */
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); /* Soft shadow effect */
         }
         .data th, .data td {
-            border: 1px solid black;
-            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Light border for soft look */
+            padding: 12px;
             text-align: center;
         }
         .data th {
-            background-color: #f2f2f2;
+            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background for headers */
+            color: #ffcc00; /* Gold color for header text */
+        }
+        .data tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05); /* Light striping for rows */
+        }
+        .data tr:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Highlight on hover */
+        }
+        a {
+            display: inline-block; /* Center the link */
+            margin: 20px 0;
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: rgba(255, 204, 0, 0.8); /* Soft yellow button */
+            color: #000;
+            border-radius: 5px; /* Soft corners for button */
+            transition: background-color 0.3s; /* Transition effect */
+        }
+        a:hover {
+            background-color: rgba(255, 204, 0, 1); /* Darker on hover */
         }
     </style>
 </head>

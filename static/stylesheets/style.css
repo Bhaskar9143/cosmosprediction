@@ -1,0 +1,112 @@
+/* General Reset and Setup */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    overflow: hidden;
+    background-color: #000;
+}
+
+/* Content Wrapper */
+.content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    margin-top: 50px;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* Navigation Styling */
+nav ul {
+    display: inline-flex;
+    list-style-type: none;
+    margin-top: 15px;
+    gap: 20px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    border-radius: 5px; /* Rounded corners */
+}
+
+nav a {
+    color: #00ffcc; /* Bright color for links */
+    text-decoration: none;
+    font-size: 1.5rem; /* Increased font size */
+    padding: 10px 15px; /* Padding for clickable area */
+    border-radius: 5px; /* Rounded corners for links */
+    transition: background 0.3s, color 0.3s; /* Smooth transitions */
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.2); /* Light background on hover */
+    color: #ff9800; /* Change text color on hover */
+}
+
+/* Background Section */
+section {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: url('https://static.vecteezy.com/system/resources/previews/010/436/376/original/half-earth-planet-space-vector.jpg') no-repeat center;
+    background-size: cover;
+    animation: animateBg 50s linear infinite;
+    z-index: 1;
+}
+
+/* Background Animation */
+@keyframes animateBg {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* Star Animation */
+span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1),
+                0 0 0 8px rgba(255, 255, 255, 0.1),
+                0 0 20px rgba(255, 255, 255, 1);
+    animation: animate 3s linear infinite;
+}
+
+span::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 300px;
+    height: 1px;
+    background: linear-gradient(90deg, #fff, transparent);
+}
+
+/* Star Animation Keyframes */
+@keyframes animate {
+    0% {
+        transform: rotate(315deg) translateX(0);
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(315deg) translateX(-1000px);
+        opacity: 0;
+    }
+}
+
+/* Different Stars with Animation Variations */
